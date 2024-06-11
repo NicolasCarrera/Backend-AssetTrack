@@ -10,6 +10,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>user-role-management-service</module>
+        <module>customer-branches-service</module>
+        <module>customer-assets-service</module>
     </modules>
 
     <properties>

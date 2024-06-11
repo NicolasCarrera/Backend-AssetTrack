@@ -21,7 +21,8 @@ public class SecurityConfig {
     private JwtUtils jwtUtils;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.csrf(AbstractHttpConfigurer::disable)
+        return httpSecurity
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(http -> {
                     // EndPoints Publicos
                     http.requestMatchers(HttpMethod.POST, "/auth/**").permitAll();
