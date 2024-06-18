@@ -28,15 +28,17 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.POST, "/auth/**").permitAll();
 
                     // EndPoints Privados
+                    http.requestMatchers(HttpMethod.GET, "/identity-document/**").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/permission/**").hasRole("ADMINISTRADOR");
                     http.requestMatchers(HttpMethod.PUT, "/permission/**").hasRole("ADMINISTRADOR");
 
+                    http.requestMatchers(HttpMethod.GET, "/role/**").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/role/**").hasRole("ADMINISTRADOR");
                     http.requestMatchers(HttpMethod.PUT, "/role/**").hasRole("ADMINISTRADOR");
 
-                    http.requestMatchers(HttpMethod.GET, "/user/**").hasRole("ADMINISTRADOR");
+                    http.requestMatchers(HttpMethod.GET, "/user/**").permitAll();
                     http.requestMatchers(HttpMethod.PATCH, "/user/**").hasRole("ADMINISTRADOR");
-                    http.requestMatchers(HttpMethod.PUT, "/user/**").hasRole("ADMINISTRADOR");
+                    http.requestMatchers(HttpMethod.PUT, "/user/**").permitAll();
 
                     // EndPoints No Especificados
                     http.anyRequest().denyAll();

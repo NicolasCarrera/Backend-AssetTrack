@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface RoleService {
+    List<RoleRecord> getAllRoles();
     Set<RoleRecord> getRolesByRoleName(List<String> roleName);
     RoleRecord saveRole(CreateRole role);
     RoleRecord updateRole(Long id, RoleRecord roleDetails);

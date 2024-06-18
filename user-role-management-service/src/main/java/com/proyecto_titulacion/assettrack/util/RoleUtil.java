@@ -9,7 +9,11 @@ import java.util.stream.Collectors;
 @Component
 public class RoleUtil {
     public static RoleRecord toRecord(RoleEntity entity) {
-        return new RoleRecord(entity.getId(), entity.getRoleName(), entity.getPermissions().stream().map(PermissionUtil::toRecord).collect(Collectors.toSet()));
+        return new RoleRecord(
+                entity.getId(),
+                entity.getRoleName(),
+                entity.getPermissions().stream().map(PermissionUtil::toRecord).collect(Collectors.toSet())
+        );
     }
 
     public static RoleEntity toEntity(RoleRecord record) {

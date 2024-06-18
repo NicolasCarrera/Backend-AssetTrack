@@ -18,7 +18,7 @@ public class AuthenticationController {
     private UserService userService;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<?> signup(@RequestBody CreateUser newUser){
+    public ResponseEntity<?> signup(@RequestBody CreateUser newUser) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.createUser(newUser));
         } catch (Exception e) {
@@ -27,7 +27,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/log-in")
-    public ResponseEntity<?> login(@RequestBody AuthenticationLogin userCredentials){
+    public ResponseEntity<?> login(@RequestBody AuthenticationLogin userCredentials) {
         try {
             AuthenticationResponse authenticationResponse = this.userService.loginUser(userCredentials);
             if (authenticationResponse == null) {

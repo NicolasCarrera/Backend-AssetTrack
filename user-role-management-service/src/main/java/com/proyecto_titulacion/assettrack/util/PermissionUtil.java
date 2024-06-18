@@ -7,7 +7,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class PermissionUtil {
     public static PermissionRecord toRecord(PermissionEntity entity) {
-        return new PermissionRecord(entity.getId(), entity.getPermissionName());
+        return new PermissionRecord(
+                entity.getId(),
+                entity.getPermissionName()
+        );
     }
     public static PermissionEntity toEntity(PermissionRecord record) {
         PermissionEntity entity = new PermissionEntity();

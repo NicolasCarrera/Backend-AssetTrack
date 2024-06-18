@@ -26,6 +26,12 @@ public class RoleServiceImpl implements RoleService {
     private PermissionService permissionService;
 
     @Override
+    public List<RoleRecord> getAllRoles() {
+        List<RoleEntity> roleEntities = this.roleRepository.findAll();
+        return roleEntities.stream().map(RoleUtil::toRecord).toList();
+    }
+
+    @Override
     public Set<RoleRecord> getRolesByRoleName(List<String> roleName) {
         Set<RoleEntity> roleEntities = this.roleRepository.findRolesByRoleName(roleName);
         return roleEntities.stream().map(RoleUtil::toRecord).collect(Collectors.toSet());

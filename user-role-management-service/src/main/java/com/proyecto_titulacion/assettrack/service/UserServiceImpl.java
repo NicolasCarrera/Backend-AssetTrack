@@ -1,16 +1,16 @@
 package com.proyecto_titulacion.assettrack.service;
 
 import com.proyecto_titulacion.assettrack.dto.*;
-import com.proyecto_titulacion.assettrack.model.PermissionEntity;
-import com.proyecto_titulacion.assettrack.model.RoleEntity;
-import com.proyecto_titulacion.assettrack.model.Status;
-import com.proyecto_titulacion.assettrack.model.UserEntity;
+import com.proyecto_titulacion.assettrack.model.*;
 import com.proyecto_titulacion.assettrack.repository.UserRepository;
 import com.proyecto_titulacion.assettrack.util.JwtUtils;
 import com.proyecto_titulacion.assettrack.util.RoleUtil;
 import com.proyecto_titulacion.assettrack.util.UserUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -41,6 +41,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private PasswordEncoder passwordEncoder;
 
     @Override
+    public Page<UserRecord> getAllUsers(Pageable pageable) {
+        Page<UserEntity> userPage = this.userRepository.findAll(pageable);
+        List<UserRecord> userRecordList = userPage.getContent().stream().map(UserUtil::toRecord).toList();
+        return new PageImpl<>(userRecordList, pageable, userPage.getTotalElements());
+    }
+
+    @Override
     public UserRecord getUserById(Long id) {
         UserEntity user = this.userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con ID: " + id));
         return UserUtil.toRecord(user);
@@ -55,9 +62,29 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
 
         UserEntity user = new UserEntity();
-        user.setUsername(createUser.username());
+
         user.setPassword(passwordEncoder.encode(createUser.password()));
+
+        user.setNames(createUser.names());
+        user.setLastName(createUser.lastName());
+        user.setEmail(createUser.email());
+        user.setPhoneNumber(createUser.phoneNumber());
+
+        List<IdentityDocument> identityDocumentList = createUser.identityDocuments().stream()
+                .map(document -> {
+                    IdentityDocument identityDocument = new IdentityDocument();
+                    identityDocument.setDocumentType(document.documentType());
+                    identityDocument.setIdentification(document.identification());
+                    identityDocument.setUser(user);
+                    return identityDocument;
+                })
+                .collect(Collectors.toList());
+
+        user.setIdentityDocuments(identityDocumentList);
+
         user.setRoles(roles);
+
+        user.setStatus(createUser.status());
 
         UserEntity savedUser = this.userRepository.save(user);
 
@@ -65,13 +92,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserRecord updateUser(Long id, UserRecord userDetails) {
+    public UserRecord updateUser(Long id, CreateUser userDetails) {
         UserEntity user = this.userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con ID: " + id));
-        user.setUsername(userDetails.username());
-        user.setStatus(userDetails.status());
+
+        user.setNames(userDetails.names());
+        user.setLastName(userDetails.lastName());
+        user.setEmail(userDetails.email());
+        user.setPhoneNumber(userDetails.phoneNumber());
+
+        Set<RoleEntity> roles = this.roleService.getRolesByRoleName(userDetails.roles()).stream().map(RoleUtil::toEntity).collect(Collectors.toSet());
 
         user.getRoles().clear();
-        user.setRoles(userDetails.roles().stream().map(RoleUtil::toEntity).collect(Collectors.toSet()));
+        user.setRoles(roles);
+
+        for (int i = 0; i < userDetails.identityDocuments().size(); i++) {
+            user.getIdentityDocuments().get(i).setDocumentType(userDetails.identityDocuments().get(i).documentType());
+            user.getIdentityDocuments().get(i).setIdentification(userDetails.identityDocuments().get(i).identification());
+        }
+
+        user.setStatus(userDetails.status());
 
         return UserUtil.toRecord(this.userRepository.save(user));
     }
@@ -86,20 +125,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public AuthenticationResponse loginUser(AuthenticationLogin userCredentials) {
-        String username = userCredentials.username();
+        String identification = userCredentials.identification();
         String password = userCredentials.password();
 
-        Authentication authentication = this.authenticateUser(username, password);
+        Authentication authentication = this.authenticateUser(identification, password);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String accessToke = this.jwtUtils.createToken(authentication);
 
-        return new AuthenticationResponse(username, "User loged succesfully", accessToke, true);
+        return new AuthenticationResponse(identification, "User loged succesfully", accessToke, true);
     }
 
     @Override
-    public Authentication authenticateUser(String username, String password) {
-        UserDetails userDetails = this.loadUserByUsername(username);
+    public Authentication authenticateUser(String identification, String password) {
+        UserDetails userDetails = this.loadUserByUsername(identification);
         if (userDetails == null) {
             throw new BadCredentialsException("Invalid username or password");
         }
@@ -111,7 +150,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity user = this.userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con username: " + username));
+        UserEntity user = this.userRepository.findByIdentification(username).orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con la identificación: " + username));
 
         Set<String> roles = user.getRoles().stream().map(RoleEntity::getRoleName).collect(Collectors.toSet());
         Set<String> permissions = user.getRoles().stream().flatMap(role -> role.getPermissions().stream()).map(PermissionEntity::getPermissionName).collect(Collectors.toSet());
@@ -121,7 +160,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         roles.forEach(role -> authorities.add(new SimpleGrantedAuthority("ROLE_".concat(role))));
         permissions.forEach(permission -> authorities.add(new SimpleGrantedAuthority(permission)));
 
-        return new User(user.getUsername(), user.getPassword(), authorities);
+        return new User(user.getIdentityDocuments().get(0).getIdentification(), user.getPassword(), authorities);
     }
 
 }
