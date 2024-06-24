@@ -12,6 +12,7 @@
         <module>user-role-management-service</module>
         <module>customer-branches-service</module>
         <module>customer-assets-service</module>
+        <module>maintenance-reporting-service</module>
     </modules>
 
     <properties>
