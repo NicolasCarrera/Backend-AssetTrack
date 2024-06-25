@@ -40,6 +40,8 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.PATCH, "/user/**").hasRole("ADMINISTRADOR");
                     http.requestMatchers(HttpMethod.PUT, "/user/**").permitAll();
 
+                    http.requestMatchers(HttpMethod.GET, "/test/**").permitAll();
+
                     // EndPoints No Especificados
                     http.anyRequest().denyAll();
                 })
