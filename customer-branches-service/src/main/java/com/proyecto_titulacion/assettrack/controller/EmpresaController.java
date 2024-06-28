@@ -23,7 +23,7 @@ public class EmpresaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EmpresaDTO> getEmpresaById(@PathVariable Long id) {
+    public ResponseEntity<EmpresaDTO> getEmpresaById(@PathVariable("id") Long id) {
         EmpresaDTO empresa = empresaService.getEmpresaById(id);
         return new ResponseEntity<>(empresa, HttpStatus.OK);
     }
@@ -35,13 +35,13 @@ public class EmpresaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EmpresaDTO> updateEmpresa(@PathVariable Long id, @RequestBody EmpresaDTO empresaDTO) {
+    public ResponseEntity<EmpresaDTO> updateEmpresa(@PathVariable("id") Long id, @RequestBody EmpresaDTO empresaDTO) {
         EmpresaDTO empresaActualizada = empresaService.updateEmpresa(id, empresaDTO);
         return new ResponseEntity<>(empresaActualizada, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEmpresa(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteEmpresa(@PathVariable("id") Long id) {
         empresaService.deleteEmpresa(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

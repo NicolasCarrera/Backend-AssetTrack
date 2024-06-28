@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "users")
+@Table(name = "activo")
 public class Activo {
 
     @Id
@@ -61,6 +61,8 @@ public class Activo {
     @Column(name = "proveedor" , nullable = false)
     private String proveedor;
 
+    @Column(name = "sucursal_id", nullable = false)
+    private Long sucursalId;
 
     public Long getId() {
         return id;

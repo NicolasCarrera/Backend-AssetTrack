@@ -24,7 +24,7 @@ public class SucursalController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SucursalDTO> getSucursalById(@PathVariable Long id) {
+    public ResponseEntity<SucursalDTO> getSucursalById(@PathVariable("id") Long id) {
         SucursalDTO sucursal = sucursalService.getSucursalById(id);
         return new ResponseEntity<>(sucursal, HttpStatus.OK);
     }
@@ -36,13 +36,13 @@ public class SucursalController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SucursalDTO> updateSucursal(@PathVariable Long id, @RequestBody SucursalDTO sucursalDTO) {
+    public ResponseEntity<SucursalDTO> updateSucursal(@PathVariable("id") Long id, @RequestBody SucursalDTO sucursalDTO) {
         SucursalDTO sucursalActualizada = sucursalService.updateSucursal(id, sucursalDTO);
         return new ResponseEntity<>(sucursalActualizada, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSucursal(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteSucursal(@PathVariable("id") Long id) {
         sucursalService.deleteSucursal(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
