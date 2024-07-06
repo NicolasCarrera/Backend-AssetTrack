@@ -3,6 +3,7 @@ package com.proyecto_titulacion.assettrack.service;
 import com.proyecto_titulacion.assettrack.dto.ReportePreventivoDTO;
 import com.proyecto_titulacion.assettrack.exception.ResourceNotFoundException;
 import com.proyecto_titulacion.assettrack.mapper.ReportePreventivoMapper;
+import com.proyecto_titulacion.assettrack.model.Reporte;
 import com.proyecto_titulacion.assettrack.model.ReportePreventivo;
 import com.proyecto_titulacion.assettrack.repository.ReportePreventivoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +50,13 @@ public class ReportePreventivoServiceImpl implements ReportePreventivoService {
         repository.delete(reporte);
     }
 
+    @Override
+    public ReportePreventivoDTO getReporte(Reporte reporte) {
+        ReportePreventivo reportePreventivo = this.repository.getReporte(reporte);
+        return mapper.toDTO(reportePreventivo);
+    }
+
     private void updateEntityFromDTO(ReportePreventivoDTO dto, ReportePreventivo entity) {
-        entity.setActivo(dto.getActivo());
         entity.setFechaInicio(dto.getFechaInicio());
         entity.setFechaFin(dto.getFechaFin());
         entity.setDescripcionTrabajo(dto.getDescripcionTrabajo());

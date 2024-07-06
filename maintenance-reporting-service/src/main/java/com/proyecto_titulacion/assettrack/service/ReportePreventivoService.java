@@ -1,6 +1,7 @@
 package com.proyecto_titulacion.assettrack.service;
 
 import com.proyecto_titulacion.assettrack.dto.ReportePreventivoDTO;
+import com.proyecto_titulacion.assettrack.model.Reporte;
 
 import java.util.List;
 
@@ -16,6 +17,6 @@ public interface ReportePreventivoService {
 
     public void deleteReporte(Long id);
 
-
+    ReportePreventivoDTO getReporte(Reporte reporte);
 
 }

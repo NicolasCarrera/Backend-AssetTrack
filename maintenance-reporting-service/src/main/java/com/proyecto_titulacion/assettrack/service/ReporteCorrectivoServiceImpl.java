@@ -3,7 +3,9 @@ package com.proyecto_titulacion.assettrack.service;
 import com.proyecto_titulacion.assettrack.dto.ReporteCorrectivoDTO;
 import com.proyecto_titulacion.assettrack.exception.ResourceNotFoundException;
 import com.proyecto_titulacion.assettrack.mapper.ReporteCorrectivoMapper;
+import com.proyecto_titulacion.assettrack.model.Reporte;
 import com.proyecto_titulacion.assettrack.model.ReporteCorrectivo;
+import com.proyecto_titulacion.assettrack.model.ReportePreventivo;
 import com.proyecto_titulacion.assettrack.repository.ReporteCorrectivoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,8 +51,13 @@ public class ReporteCorrectivoServiceImpl implements ReporteCorrectivoService {
         repository.delete(reporte);
     }
 
+    @Override
+    public ReporteCorrectivoDTO getReporte(Reporte reporte) {
+        ReporteCorrectivo correctivo = this.repository.getReporte(reporte);
+        return mapper.toDTO(correctivo);
+    }
+
     private void updateEntityFromDTO(ReporteCorrectivoDTO dto, ReporteCorrectivo entity) {
-        entity.setActivo(dto.getActivo());
         entity.setFechaIncidente(dto.getFechaIncidente());
         entity.setDescripcionProblema(dto.getDescripcionProblema());
         entity.setAnalisisProblema(dto.getAnalisisProblema());

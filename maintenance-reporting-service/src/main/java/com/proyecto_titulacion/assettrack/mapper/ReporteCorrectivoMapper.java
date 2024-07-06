@@ -10,7 +10,6 @@ public class ReporteCorrectivoMapper {
     public ReporteCorrectivoDTO toDTO(ReporteCorrectivo entity) {
         ReporteCorrectivoDTO dto = new ReporteCorrectivoDTO();
         dto.setId(entity.getId());
-        dto.setActivo(entity.getActivo());
         dto.setFechaIncidente(entity.getFechaIncidente());
         dto.setDescripcionProblema(entity.getDescripcionProblema());
         dto.setAnalisisProblema(entity.getAnalisisProblema());
@@ -31,7 +30,6 @@ public class ReporteCorrectivoMapper {
     public ReporteCorrectivo toEntity(ReporteCorrectivoDTO dto) {
         ReporteCorrectivo entity = new ReporteCorrectivo();
         entity.setId(dto.getId());
-        entity.setActivo(dto.getActivo());
         entity.setFechaIncidente(dto.getFechaIncidente());
         entity.setDescripcionProblema(dto.getDescripcionProblema());
         entity.setAnalisisProblema(dto.getAnalisisProblema());

@@ -10,7 +10,6 @@ public class ReportePreventivoMapper {
     public ReportePreventivoDTO toDTO(ReportePreventivo entity) {
         ReportePreventivoDTO dto = new ReportePreventivoDTO();
         dto.setId(entity.getId());
-        dto.setActivo(entity.getActivo());
         dto.setFechaInicio(entity.getFechaInicio());
         dto.setFechaFin(entity.getFechaFin());
         dto.setDescripcionTrabajo(entity.getDescripcionTrabajo());
@@ -26,7 +25,6 @@ public class ReportePreventivoMapper {
     public ReportePreventivo toEntity(ReportePreventivoDTO dto) {
         ReportePreventivo entity = new ReportePreventivo();
         entity.setId(dto.getId());
-        entity.setActivo(dto.getActivo());
         entity.setFechaInicio(dto.getFechaInicio());
         entity.setFechaFin(dto.getFechaFin());
         entity.setDescripcionTrabajo(dto.getDescripcionTrabajo());
