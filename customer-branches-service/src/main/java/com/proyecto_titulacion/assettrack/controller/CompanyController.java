@@ -25,7 +25,7 @@ public class CompanyController {
         return ResponseEntity.ok(companies);
     }
 
-    @GetMapping
+    @GetMapping("/name")
     public ResponseEntity<Page<Company>> getCompaniesByName(
             @RequestParam("name") String name,
             @RequestParam(value = "page", defaultValue = "0") int page,

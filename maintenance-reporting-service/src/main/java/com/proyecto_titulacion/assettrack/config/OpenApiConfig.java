@@ -13,8 +13,8 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .components(new Components())
                 .info(new Info()
-                        .title("Microservicio de activos")
+                        .title("Microservicio de reportes de mantenimiento")
                         .version("1.0")
-                        .description("Documentación de la API del microservicio de activos"));
+                        .description("Documentación de la API del microservicio de reportes de mantenimiento"));
     }
 }

@@ -13,8 +13,8 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .components(new Components())
                 .info(new Info()
-                        .title("Microservicio de activos")
+                        .title("Microservicio de ordenes de trabajo ")
                         .version("1.0")
-                        .description("Documentación de la API del microservicio de activos"));
+                        .description("Documentación de la API del microservicio de ordenes de trabajo "));
     }
 }

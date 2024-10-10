@@ -22,26 +22,79 @@ spring:
             allowCredentials: true
             maxAge: 3600
       routes:
+        # Rutas para el microservicio de roles y usuarios
         - id: user-role-management-service
           uri: lb://user-role-management-service
           predicates:
             - Path=/api/v1/users/**
+        - id: user-role-management-service-openapi
+          uri: lb://user-role-management-service
+          predicates:
+            - Path=/api/v1/users/v3/api-docs/**
+          filters:
+            - RewritePath=/api/v1/users/v3/api-docs/(?<segment>.*), /v3/api-docs/${segment}
+
+        # Rutas para el microservicio de empresas y sucursales
         - id: customer-branches-service
           uri: lb://customer-branches-service
           predicates:
             - Path=/api/v1/customers/**
+        - id: customer-branches-service-openapi
+          uri: lb://customer-branches-service
+          predicates:
+            - Path=/api/v1/customers/v3/api-docs/**
+          filters:
+            - RewritePath=/api/v1/customers/v3/api-docs/(?<segment>.*), /v3/api-docs/${segment}
+
+        # Rutas para el microservicio de activos
         - id: customer-assets-service
           uri: lb://customer-assets-service
           predicates:
-            - Path=/api/v1/assets/**, /api-docs
+            - Path=/api/v1/assets/**
+        - id: customer-assets-service-openapi
+          uri: lb://customer-assets-service
+          predicates:
+            - Path=/api/v1/assets/v3/api-docs/**
+          filters:
+            - RewritePath=/api/v1/assets/v3/api-docs/(?<segment>.*), /v3/api-docs/${segment}
+
+        # Rutas para el microservicio de reportes de mantenimiento
         - id: maintenance-reporting-service
           uri: lb://maintenance-reporting-service
           predicates:
             - Path=/api/v1/maintenance/**
+        - id: maintenance-reporting-service-openapi
+          uri: lb://maintenance-reporting-service
+          predicates:
+            - Path=/api/v1/maintenance/v3/api-docs/**
+          filters:
+            - RewritePath=/api/v1/maintenance/v3/api-docs/(?<segment>.*), /v3/api-docs/${segment}
+
+        # Rutas para el microservicio de ordenes de trabajo
         - id: work-order-service
           uri: lb://work-order-service
           predicates:
             - Path=/api/v1/work-orders/**
+        - id: work-order-service-openapi
+          uri: lb://work-order-service
+          predicates:
+            - Path=/api/v1/work-orders/v3/api-docs/**
+          filters:
+            - RewritePath=/api/v1/work-orders/v3/api-docs/(?<segment>.*), /v3/api-docs/${segment}
+
+springdoc:
+  swagger-ui:
+    urls:
+      - name: User Role Management Service
+        url: /api/v1/users/v3/api-docs
+      - name: Customer Branches Service
+        url: /api/v1/customers/v3/api-docs
+      - name: Customer Assets Service
+        url: /api/v1/assets/v3/api-docs
+      - name: Maintenance Reporting Service
+        url: /api/v1/maintenance/v3/api-docs
+      - name: Work Order Service
+        url: /api/v1/work-orders/v3/api-docs
 
 eureka:
   client:
