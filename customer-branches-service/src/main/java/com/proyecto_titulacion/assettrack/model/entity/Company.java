@@ -16,7 +16,8 @@ import java.util.List;
 @AllArgsConstructor
 public class Company {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "companies_seq")
+    @SequenceGenerator(name = "companies_seq", sequenceName = "companies_seq", allocationSize = 1)
     private Long id;
 
     private String name;

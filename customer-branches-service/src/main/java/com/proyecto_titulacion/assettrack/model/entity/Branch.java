@@ -15,7 +15,8 @@ import lombok.*;
 @AllArgsConstructor
 public class Branch {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "branches_seq")
+    @SequenceGenerator(name = "branches_seq", sequenceName = "branches_seq", allocationSize = 1)
     private Long id;
 
     private String name;

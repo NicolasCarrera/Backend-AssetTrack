@@ -14,7 +14,8 @@ import lombok.*;
 @AllArgsConstructor
 public class IdentityDocument {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "identity_document_seq")
+    @SequenceGenerator(name = "identity_document_seq", sequenceName = "identity_document_seq", allocationSize = 1)
     private Long id;
 
     @Enumerated(EnumType.STRING)

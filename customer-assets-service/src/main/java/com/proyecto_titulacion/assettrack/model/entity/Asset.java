@@ -17,7 +17,8 @@ import java.util.List;
 @AllArgsConstructor
 public class Asset {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "assets_seq")
+    @SequenceGenerator(name = "assets_seq", sequenceName = "assets_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "image_path", columnDefinition = "TEXT")

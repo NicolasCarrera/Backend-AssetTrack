@@ -14,7 +14,8 @@ import java.util.List;
 @Table(name = "work_orders")
 public class WorkOrder {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "work_orders_seq")
+    @SequenceGenerator(name = "work_orders_seq", sequenceName = "work_orders_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "maintenance_type", nullable = false)
