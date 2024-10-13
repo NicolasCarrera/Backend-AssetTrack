@@ -3,6 +3,7 @@ package com.proyecto_titulacion.assettrack.model.dto;
 import com.proyecto_titulacion.assettrack.model.entity.CorrectiveMaintenance;
 
 import java.util.List;
+import java.util.Objects;
 
 public record CorrectiveMaintenanceDTO(
         Long id,
@@ -11,8 +12,10 @@ public record CorrectiveMaintenanceDTO(
         String postMaintenanceStatus,
         List<DiagnosticActionDTO> diagnosticActions
 ) {
-    public static CorrectiveMaintenanceDTO toCorrectiveMaintenanceDTO(CorrectiveMaintenance correctiveMaintenance){
-        return new CorrectiveMaintenanceDTO(
+    public static CorrectiveMaintenanceDTO toCorrectiveMaintenanceDTO(CorrectiveMaintenance correctiveMaintenance) {
+        return Objects.isNull(correctiveMaintenance)
+                ? null
+                : new CorrectiveMaintenanceDTO(
                 correctiveMaintenance.getId(),
                 correctiveMaintenance.getIssueDescription(),
                 correctiveMaintenance.getFailureCause(),
@@ -20,7 +23,8 @@ public record CorrectiveMaintenanceDTO(
                 correctiveMaintenance.getDiagnosticActions().stream().map(DiagnosticActionDTO::toDiagnosticActionDTO).toList()
         );
     }
-    public CorrectiveMaintenance toCorrectiveMaintenance(){
+
+    public CorrectiveMaintenance toCorrectiveMaintenance() {
         return CorrectiveMaintenance.builder()
                 .id(this.id)
                 .issueDescription(this.issueDescription)

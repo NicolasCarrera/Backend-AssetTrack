@@ -1,5 +1,6 @@
 package com.proyecto_titulacion.assettrack.service;
 
+import com.proyecto_titulacion.assettrack.model.dto.CreateCompany;
 import com.proyecto_titulacion.assettrack.model.entity.Company;
 import com.proyecto_titulacion.assettrack.repository.CompanyRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -7,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
@@ -31,10 +34,14 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Company updateCompany(Long id, Company updateCompany) {
-        Company company = this.companyRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Empresa no encontrada con ID: " + id));
-        updateCompany.setId(company.getUserId());
-        return this.companyRepository.save(updateCompany);
+    public Optional<Company> updateCompany(Long id, CreateCompany companyDetails) {
+        return this.companyRepository.findById(id)
+                .map(company -> {
+                    company.setName(companyDetails.name());
+                    company.setUserId(companyDetails.userId());
+                    company.setStatus(companyDetails.status());
+                    return this.companyRepository.save(company);
+                });
     }
 
     @Override
@@ -48,7 +55,11 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Company createCompany(Company createCompany) {
-        return this.companyRepository.save(createCompany);
+    public Company createCompany(CreateCompany createCompany) {
+        return this.companyRepository.save(Company.builder()
+                        .name(createCompany.name())
+                        .userId(createCompany.userId())
+                        .status(createCompany.status())
+                .build());
     }
 }

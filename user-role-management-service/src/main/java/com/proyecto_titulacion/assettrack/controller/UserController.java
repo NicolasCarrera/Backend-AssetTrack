@@ -2,9 +2,7 @@ package com.proyecto_titulacion.assettrack.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.proyecto_titulacion.assettrack.model.dto.UserDTO;
-import com.proyecto_titulacion.assettrack.model.entity.CreateUser;
-import com.proyecto_titulacion.assettrack.model.entity.UserEntity;
-import com.proyecto_titulacion.assettrack.repository.UserRepository;
+import com.proyecto_titulacion.assettrack.model.dto.CreateUser;
 import com.proyecto_titulacion.assettrack.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

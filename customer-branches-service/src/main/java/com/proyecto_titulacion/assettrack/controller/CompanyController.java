@@ -1,5 +1,6 @@
 package com.proyecto_titulacion.assettrack.controller;
 
+import com.proyecto_titulacion.assettrack.model.dto.CreateCompany;
 import com.proyecto_titulacion.assettrack.model.entity.Company;
 import com.proyecto_titulacion.assettrack.service.CompanyService;
 import jakarta.persistence.EntityNotFoundException;
@@ -42,9 +43,9 @@ public class CompanyController {
     }
 
     @PostMapping
-    public ResponseEntity<Company> createCompany(@RequestBody Company createCompany) {
+    public ResponseEntity<Company> createCompany(@RequestBody CreateCompany createCompany) {
         Company company = this.companyService.createCompany(createCompany);
-        return ResponseEntity.ok(company);
+        return ResponseEntity.status(HttpStatus.CREATED).body(company);
     }
 
     @GetMapping("/{id}")
@@ -58,9 +59,10 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Company> updateCompany(@PathVariable("id") Long id, @RequestBody Company updateCompany) {
-        Company company = this.companyService.updateCompany(id, updateCompany);
-        return ResponseEntity.ok(company);
+    public ResponseEntity<Company> updateCompany(@PathVariable("id") Long id, @RequestBody CreateCompany companyDetails) {
+        return this.companyService.updateCompany(id, companyDetails)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")

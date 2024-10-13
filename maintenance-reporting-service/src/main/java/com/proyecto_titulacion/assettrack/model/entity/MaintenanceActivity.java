@@ -15,7 +15,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class MaintenanceActivity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "maintenance_activities_seq")
+    @SequenceGenerator(name = "maintenance_activities_seq", sequenceName = "maintenance_activities_seq", allocationSize = 1)
     private Long id;
 
     @ManyToOne

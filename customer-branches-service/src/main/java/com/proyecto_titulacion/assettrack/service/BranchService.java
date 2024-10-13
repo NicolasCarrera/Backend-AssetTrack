@@ -1,7 +1,10 @@
 package com.proyecto_titulacion.assettrack.service;
 
+import com.proyecto_titulacion.assettrack.model.dto.CreateBranch;
 import com.proyecto_titulacion.assettrack.model.entity.Branch;
 import org.springframework.data.domain.Page;
+
+import java.util.Optional;
 
 public interface BranchService {
     Branch getBranchById(Long id);
@@ -10,9 +13,9 @@ public interface BranchService {
 
     Page<Branch> getAllBranches(int page, int size);
 
-    Branch createBranch(Branch createBranch);
+    Branch createBranch(CreateBranch createBranch);
 
-    Branch updateBranch(Long id, Branch updateBranch);
+    Optional<Branch> updateBranch(Long id, CreateBranch branchDetails);
 
     void deleteBranch(Long id);
 }

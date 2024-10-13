@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.proyecto_titulacion.assettrack.model.dto.IdentityDocumentDTO;
 import com.proyecto_titulacion.assettrack.model.dto.UserDTO;
-import com.proyecto_titulacion.assettrack.model.entity.CreateUser;
+import com.proyecto_titulacion.assettrack.model.dto.CreateUser;
 import com.proyecto_titulacion.assettrack.model.entity.RoleEntity;
 import com.proyecto_titulacion.assettrack.model.entity.UserEntity;
 import com.proyecto_titulacion.assettrack.repository.RoleRepository;
@@ -96,8 +96,13 @@ public class UserServiceImpl implements UserService {
         userEntity.setLastName(updateUser.lastName());
         userEntity.setEmail(updateUser.email());
         userEntity.setPhone(updateUser.phone());
-        userEntity.setIdentityDocuments(updateUser.documents().stream().map(IdentityDocumentDTO::toIdentityDocument).toList());
-        userEntity.setRoles(Set.of(roleEntity));
+        userEntity.setIdentityDocuments(new ArrayList<>(updateUser.documents().stream()
+                .map(IdentityDocumentDTO::toIdentityDocument)
+                .toList()));
+
+        if (roleEntity != null) {
+            userEntity.setRoles(new HashSet<>(Collections.singleton(roleEntity)));
+        }
         userEntity.setStatus(updateUser.status());
 
         return UserDTO.toUserDTO(this.userRepository.save(userEntity));

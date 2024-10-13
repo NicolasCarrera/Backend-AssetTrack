@@ -19,9 +19,9 @@ public class MaintenanceReportController {
     @Autowired
     private MaintenanceReportService maintenanceReportService;
 
-    @GetMapping
+    @GetMapping("/assets/{assetId}")
     public ResponseEntity<Page<MaintenanceReport>> getMaintenanceReportsByAssetId(
-            @RequestParam("assetId") Long assetId,
+            @PathVariable("assetId") Long assetId,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size
     ){
@@ -30,9 +30,9 @@ public class MaintenanceReportController {
     }
 
     @PostMapping
-    public ResponseEntity<MaintenanceReportDTO> cleateMaintenanceReport(@RequestBody MaintenanceReport cleateMaintenanceReport){
-        MaintenanceReport maintenanceReport = this.maintenanceReportService.cleateMaintenanceReport(cleateMaintenanceReport);
-        return ResponseEntity.status(HttpStatus.CREATED).body(null);
+    public ResponseEntity<MaintenanceReport> createMaintenanceReport(@RequestBody MaintenanceReport cleateMaintenanceReport){
+        MaintenanceReport maintenanceReport = this.maintenanceReportService.createMaintenanceReport(cleateMaintenanceReport);
+        return ResponseEntity.status(HttpStatus.CREATED).body(maintenanceReport);
     }
 
     @GetMapping("/{id}")

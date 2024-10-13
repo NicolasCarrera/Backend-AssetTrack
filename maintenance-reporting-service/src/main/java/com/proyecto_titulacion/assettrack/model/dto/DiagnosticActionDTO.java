@@ -2,6 +2,7 @@ package com.proyecto_titulacion.assettrack.model.dto;
 
 import com.proyecto_titulacion.assettrack.model.entity.DiagnosticAction;
 
+import java.util.Objects;
 import java.util.Set;
 
 public record DiagnosticActionDTO(
@@ -9,13 +10,16 @@ public record DiagnosticActionDTO(
         String action,
         Set<String> descriptions
 ) {
-    public static DiagnosticActionDTO toDiagnosticActionDTO(DiagnosticAction diagnosticAction){
-        return new DiagnosticActionDTO(
+    public static DiagnosticActionDTO toDiagnosticActionDTO(DiagnosticAction diagnosticAction) {
+        return Objects.isNull(diagnosticAction)
+                ? null
+                : new DiagnosticActionDTO(
                 diagnosticAction.getId(),
                 diagnosticAction.getAction(),
                 diagnosticAction.getDescriptions()
         );
     }
+
     public DiagnosticAction toDiagnosticAction() {
         return DiagnosticAction.builder()
                 .id(this.id)

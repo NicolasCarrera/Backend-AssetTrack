@@ -2,6 +2,7 @@ package com.proyecto_titulacion.assettrack.model.dto;
 
 import com.proyecto_titulacion.assettrack.model.entity.MaintenanceActivity;
 
+import java.util.Objects;
 import java.util.Set;
 
 public record MaintenanceActivityDTO(
@@ -9,8 +10,10 @@ public record MaintenanceActivityDTO(
         String name,
         Set<String> tasks
 ) {
-    public static MaintenanceActivityDTO toMaintenanceActivityDTO(MaintenanceActivity maintenanceActivity){
-        return new MaintenanceActivityDTO(
+    public static MaintenanceActivityDTO toMaintenanceActivityDTO(MaintenanceActivity maintenanceActivity) {
+        return Objects.isNull(maintenanceActivity)
+                ? null
+                : new MaintenanceActivityDTO(
                 maintenanceActivity.getId(),
                 maintenanceActivity.getName(),
                 maintenanceActivity.getTasks()

@@ -1,7 +1,10 @@
 package com.proyecto_titulacion.assettrack.service;
 
+import com.proyecto_titulacion.assettrack.model.dto.CreateCompany;
 import com.proyecto_titulacion.assettrack.model.entity.Company;
 import org.springframework.data.domain.Page;
+
+import java.util.Optional;
 
 public interface CompanyService {
 
@@ -11,11 +14,11 @@ public interface CompanyService {
 
     Company getCompanyByUserId(Long userId);
 
-    Company createCompany(Company createCompany);
+    Company createCompany(CreateCompany createCompany);
 
     Company getCompanyById(Long id);
 
-    Company updateCompany(Long id, Company updateCompany);
+    Optional<Company> updateCompany(Long id, CreateCompany companyDetails);
 
     void deleteCompany(Long id);
 }

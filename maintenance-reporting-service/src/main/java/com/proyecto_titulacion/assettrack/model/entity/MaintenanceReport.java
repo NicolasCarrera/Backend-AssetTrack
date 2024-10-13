@@ -17,7 +17,8 @@ import java.util.List;
 @AllArgsConstructor
 public class MaintenanceReport {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "maintenance_reports_seq")
+    @SequenceGenerator(name = "maintenance_reports_seq", sequenceName = "maintenance_reports_seq", allocationSize = 1)
     private Long id;
 
     @Enumerated(EnumType.STRING)

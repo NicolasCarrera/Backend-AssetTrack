@@ -1,15 +1,18 @@
 package com.proyecto_titulacion.assettrack.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.proyecto_titulacion.assettrack.model.type.StatusType;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "branches")
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Branch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,11 +23,12 @@ public class Branch {
     private String email;
     private String phone;
 
-    //@Column(nullable = false)
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private StatusType status;
 
     @Transient
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer assets;
 
     @ManyToOne(fetch = FetchType.LAZY)

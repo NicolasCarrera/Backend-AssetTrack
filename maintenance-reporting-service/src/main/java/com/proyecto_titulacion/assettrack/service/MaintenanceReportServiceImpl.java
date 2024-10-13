@@ -31,8 +31,7 @@ public class MaintenanceReportServiceImpl implements MaintenanceReportService {
         return this.maintenanceReportRepository.getMaintenanceReportsByAssetId(assetId, pageRequest);
     }
 
-    @Override
-    public MaintenanceReport cleateMaintenanceReport(MaintenanceReport cleateMaintenanceReport) {
+    public MaintenanceReport createMaintenanceReport(MaintenanceReport cleateMaintenanceReport) {
         return this.maintenanceReportRepository.save(cleateMaintenanceReport);
     }
 

@@ -10,6 +10,7 @@ import com.proyecto_titulacion.assettrack.model.type.MaintenanceType;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record MaintenanceReportDTO(
@@ -27,7 +28,9 @@ public record MaintenanceReportDTO(
         CorrectiveMaintenanceDTO correctiveMaintenance
 ) {
     public static MaintenanceReportDTO maintenanceReportDTO(MaintenanceReport maintenanceReport, UserDTO user, AssetDTO asset, BranchDTO branch, CompanyDTO company) {
-        return new MaintenanceReportDTO(
+        return Objects.isNull(maintenanceReport)
+                ? null
+                : new MaintenanceReportDTO(
                 maintenanceReport.getId(),
                 maintenanceReport.getType(),
                 maintenanceReport.getDate(),

@@ -13,7 +13,8 @@ import lombok.*;
 @AllArgsConstructor
 public class PreventiveMaintenance {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "preventive_maintenance_seq")
+    @SequenceGenerator(name = "preventive_maintenance_seq", sequenceName = "preventive_maintenance_seq", allocationSize = 1)
     private Long id;
 
     @OneToOne

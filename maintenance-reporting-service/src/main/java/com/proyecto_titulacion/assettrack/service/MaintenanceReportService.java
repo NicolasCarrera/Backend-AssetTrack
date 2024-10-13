@@ -12,7 +12,7 @@ public interface MaintenanceReportService {
 
     Page<MaintenanceReport> getMaintenanceReportsByAssetId(Long assetId, int page, int size);
 
-    MaintenanceReport cleateMaintenanceReport(MaintenanceReport cleateMaintenanceReport);
+    MaintenanceReport createMaintenanceReport(MaintenanceReport cleateMaintenanceReport);
 
     MaintenanceReport updateMaintenanceReport(Long id, MaintenanceReport updateMaintenanceReport);
 }

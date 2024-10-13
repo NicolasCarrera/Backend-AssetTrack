@@ -1,5 +1,6 @@
 package com.proyecto_titulacion.assettrack.controller;
 
+import com.proyecto_titulacion.assettrack.model.dto.CreateBranch;
 import com.proyecto_titulacion.assettrack.model.entity.Branch;
 import com.proyecto_titulacion.assettrack.service.BranchService;
 import jakarta.persistence.EntityNotFoundException;
@@ -45,9 +46,9 @@ public class BranchController {
     }
 
     @PostMapping
-    public ResponseEntity<Branch> createBranch(@RequestBody Branch createBranch){
+    public ResponseEntity<Branch> createBranch(@RequestBody CreateBranch createBranch) {
         Branch branch = this.branchService.createBranch(createBranch);
-        return ResponseEntity.ok(branch);
+        return ResponseEntity.status(HttpStatus.CREATED).body(branch);
     }
 
     @GetMapping("/{id}")
@@ -61,13 +62,14 @@ public class BranchController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Branch> updateBranch(@PathVariable("id") Long id, Branch updateBranch) {
-        Branch branch = this.branchService.updateBranch(id, updateBranch);
-        return ResponseEntity.ok(branch);
+    public ResponseEntity<Branch> updateBranch(@PathVariable("id") Long id, CreateBranch branchDetails) {
+        return this.branchService.updateBranch(id, branchDetails)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBranch(@PathVariable("id") Long id){
+    public ResponseEntity<Void> deleteBranch(@PathVariable("id") Long id) {
         try {
             this.branchService.deleteBranch(id);
             return ResponseEntity.noContent().build();

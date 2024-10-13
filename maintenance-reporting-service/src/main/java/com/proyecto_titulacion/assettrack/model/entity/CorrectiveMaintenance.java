@@ -16,7 +16,8 @@ import java.util.List;
 @AllArgsConstructor
 public class CorrectiveMaintenance {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "corrective_maintenance_seq")
+    @SequenceGenerator(name = "corrective_maintenance_seq", sequenceName = "corrective_maintenance_seq", allocationSize = 1)
     private Long id;
 
     @OneToOne

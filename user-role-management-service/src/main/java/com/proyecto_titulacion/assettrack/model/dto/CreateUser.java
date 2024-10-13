@@ -1,4 +1,4 @@
-package com.proyecto_titulacion.assettrack.model.entity;
+package com.proyecto_titulacion.assettrack.model.dto;
 
 import com.proyecto_titulacion.assettrack.model.dto.IdentityDocumentDTO;
 import com.proyecto_titulacion.assettrack.model.type.StatusType;
