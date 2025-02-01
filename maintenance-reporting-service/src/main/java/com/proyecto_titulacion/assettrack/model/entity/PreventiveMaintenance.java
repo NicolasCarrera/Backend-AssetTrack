@@ -1,6 +1,7 @@
 package com.proyecto_titulacion.assettrack.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,7 +20,7 @@ public class PreventiveMaintenance {
 
     @OneToOne
     @JoinColumn(name = "maintenance_report_id", updatable = false, nullable = false)
-    @JsonBackReference
+    @JsonIgnore
     private MaintenanceReport maintenanceReport;
 
     private String frequency;

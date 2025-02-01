@@ -1,6 +1,7 @@
 package com.proyecto_titulacion.assettrack.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,7 +22,7 @@ public class DiagnosticAction {
 
     @ManyToOne
     @JoinColumn(name = "corrective_maintenance_id", nullable = false)
-    @JsonBackReference
+    @JsonIgnore
     private CorrectiveMaintenance correctiveMaintenance;
 
     @Column(nullable = false)

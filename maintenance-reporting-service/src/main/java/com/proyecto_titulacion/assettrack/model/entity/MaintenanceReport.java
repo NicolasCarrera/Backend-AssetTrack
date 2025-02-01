@@ -48,14 +48,37 @@ public class MaintenanceReport {
     private Long companyId;
 
     @OneToMany(mappedBy = "maintenanceReport", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    //@JsonManagedReference
     private List<MaintenanceActivity> maintenanceActivities;
 
     @OneToOne(mappedBy = "maintenanceReport", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    //@JsonManagedReference
     private PreventiveMaintenance preventiveMaintenance;
 
     @OneToOne(mappedBy = "maintenanceReport", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    //@JsonManagedReference
     private CorrectiveMaintenance correctiveMaintenance;
+
+    public void setMaintenanceActivities(List<MaintenanceActivity> maintenanceActivities) {
+        this.maintenanceActivities = maintenanceActivities;
+        if (maintenanceActivities != null && !maintenanceActivities.isEmpty()) {
+            for (MaintenanceActivity maintenanceActivity : maintenanceActivities) {
+                maintenanceActivity.setMaintenanceReport(this);
+            }
+        }
+    }
+
+    public void setPreventiveMaintenance(PreventiveMaintenance preventiveMaintenance) {
+        this.preventiveMaintenance = preventiveMaintenance;
+        if (preventiveMaintenance != null) {
+            preventiveMaintenance.setMaintenanceReport(this);
+        }
+    }
+
+    public void setCorrectiveMaintenance(CorrectiveMaintenance correctiveMaintenance) {
+        this.correctiveMaintenance = correctiveMaintenance;
+        if (correctiveMaintenance != null) {
+            correctiveMaintenance.setMaintenanceReport(this);
+        }
+    }
 }

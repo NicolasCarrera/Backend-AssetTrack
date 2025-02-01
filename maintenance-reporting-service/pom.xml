@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>maintenance-reporting-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>maintenance-reporting-service</name>
 	<description>Implementación en Cloud Computing de un Sistema Integral de Gestión de Mantenimientos de Activos para Empresas</description>
 	<url/>
