@@ -32,5 +32,13 @@ build/
 ### VS Code ###
 .vscode/
 
-### ZIP
+### Compressed Files (ZIP) ###
 *.zip
+
+### Environment Variables ###
+.env
+.env.customer-assets-service
+.env.customer-branches-service
+.env.maintenance-reporting-service
+.env.user-role-management-service
+.env.work-order-service
