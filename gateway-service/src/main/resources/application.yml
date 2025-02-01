@@ -3,11 +3,9 @@ server:
 
 spring:
   application:
-    name: gateway-service
+    name: api-gateway
   cloud:
     gateway:
-      default-filters:
-        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST
       globalcors:
         cors-configurations:
           '[/**]':
@@ -18,7 +16,17 @@ spring:
               - PUT
               - DELETE
               - OPTIONS
-            allowedHeaders: "*"
+            allowedHeaders:
+              - Origin
+              - Content-Type
+              - Accept
+              - Authorization
+              - X-Requested-With
+              - Access-Control-Request-Method
+              - Access-Control-Request-Headers
+            exposedHeaders:
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Credentials
             allowCredentials: true
             maxAge: 3600
       routes:
@@ -27,61 +35,86 @@ spring:
           uri: lb://user-role-management-service
           predicates:
             - Path=/api/v1/users/**
+          filters:
+            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST
         - id: user-role-management-service-openapi
           uri: lb://user-role-management-service
           predicates:
             - Path=/api/v1/users/v3/api-docs/**
           filters:
-            - RewritePath=/api/v1/users/v3/api-docs/(?<segment>.*), /v3/api-docs/${segment}
+            - RewritePath=/api/v1/customers/v3/api-docs/(?<segment>.*), /v3/api-docs/${segment}
+            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST
 
         # Rutas para el microservicio de empresas y sucursales
         - id: customer-branches-service
           uri: lb://customer-branches-service
           predicates:
             - Path=/api/v1/customers/**
+          filters:
+            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST
         - id: customer-branches-service-openapi
           uri: lb://customer-branches-service
           predicates:
             - Path=/api/v1/customers/v3/api-docs/**
           filters:
             - RewritePath=/api/v1/customers/v3/api-docs/(?<segment>.*), /v3/api-docs/${segment}
+            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST
 
         # Rutas para el microservicio de activos
         - id: customer-assets-service
           uri: lb://customer-assets-service
           predicates:
             - Path=/api/v1/assets/**
+          filters:
+            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST
         - id: customer-assets-service-openapi
           uri: lb://customer-assets-service
           predicates:
             - Path=/api/v1/assets/v3/api-docs/**
           filters:
             - RewritePath=/api/v1/assets/v3/api-docs/(?<segment>.*), /v3/api-docs/${segment}
+            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST
 
         # Rutas para el microservicio de reportes de mantenimiento
         - id: maintenance-reporting-service
           uri: lb://maintenance-reporting-service
           predicates:
             - Path=/api/v1/maintenance/**
+          filters:
+            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST
         - id: maintenance-reporting-service-openapi
           uri: lb://maintenance-reporting-service
           predicates:
             - Path=/api/v1/maintenance/v3/api-docs/**
           filters:
             - RewritePath=/api/v1/maintenance/v3/api-docs/(?<segment>.*), /v3/api-docs/${segment}
+            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST
 
         # Rutas para el microservicio de ordenes de trabajo
         - id: work-order-service
           uri: lb://work-order-service
           predicates:
             - Path=/api/v1/work-orders/**
+          filters:
+            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST
         - id: work-order-service-openapi
           uri: lb://work-order-service
           predicates:
             - Path=/api/v1/work-orders/v3/api-docs/**
           filters:
             - RewritePath=/api/v1/work-orders/v3/api-docs/(?<segment>.*), /v3/api-docs/${segment}
+            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST
 
+
+# Cliente Eureka
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
+  instance:
+    preferIpAddress: true
+
+# Configuración de Swagger OpenAPI (Springdoc)
 springdoc:
   swagger-ui:
     urls:
@@ -95,15 +128,3 @@ springdoc:
         url: /api/v1/maintenance/v3/api-docs
       - name: Work Order Service
         url: /api/v1/work-orders/v3/api-docs
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
-  instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-
-logging:
-  level:
-    org.springframework.cloud.gateway: DEBUG
-    reactor.netty: DEBUG
