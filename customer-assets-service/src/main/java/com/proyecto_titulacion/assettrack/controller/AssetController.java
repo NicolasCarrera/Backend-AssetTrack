@@ -26,7 +26,7 @@ public class AssetController {
     @Autowired
     private AssetService assetService;
 
-    @Operation(summary = "Obtener activos en mantenimiento por Branch ID", description = "Devuelve una lista paginada de activos que están en mantenimiento en una sucursal específica")
+    @Operation(summary = "Obtener activos en manten imiento por Branch ID", description = "Devuelve una lista paginada de activos que están en mantenimiento en una sucursal específica")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Activos encontrados con éxito",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Page.class))
@@ -62,9 +62,9 @@ public class AssetController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Activos encontrados con éxito")
     })
-    @GetMapping
+    @GetMapping("/filter/{filter}")
     public ResponseEntity<Page<AssetDTO>> getAssetsByFilter(
-            @RequestParam("filter") String filter,
+            @PathVariable("filter") String filter,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size
     ) {
@@ -99,32 +99,32 @@ public class AssetController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdAsset);
     }
 
-    @Operation(summary = "Actualizar archivos de un activo",
-            description = "Actualiza la imagen y los documentos asociados a un activo existente.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    description = "Archivos actualizados exitosamente",
-                    content = @Content(schema = @Schema(implementation = AssetDTO.class))),
-            @ApiResponse(responseCode = "500",
-                    description = "Error interno del servidor",
-                    content = @Content)
-    })
-    @PostMapping("/{id}/files")
-    public ResponseEntity<AssetDTO> updateAssetFiles(
-            @Parameter(description = "ID del activo a actualizar", required = true)
-            @PathVariable("id") Long assetId,
-            @Parameter(description = "Imagen del activo actualizada")
-            @RequestParam("image") MultipartFile image,
-            @Parameter(description = "Lista de documentos actualizados asociados al activo")
-            @RequestParam("documents") List<MultipartFile> documents
-    ) {
-        try {
-            AssetDTO updatedAsset = this.assetService.updateAssetFiles(assetId, image, documents);
-            return ResponseEntity.ok(updatedAsset);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
-    }
+//    @Operation(summary = "Actualizar archivos de un activo",
+//            description = "Actualiza la imagen y los documentos asociados a un activo existente.")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200",
+//                    description = "Archivos actualizados exitosamente",
+//                    content = @Content(schema = @Schema(implementation = AssetDTO.class))),
+//            @ApiResponse(responseCode = "500",
+//                    description = "Error interno del servidor",
+//                    content = @Content)
+//    })
+//    @PostMapping("/{id}/files")
+//    public ResponseEntity<AssetDTO> updateAssetFiles(
+//            @Parameter(description = "ID del activo a actualizar", required = true)
+//            @PathVariable("id") Long assetId,
+//            @Parameter(description = "Imagen del activo actualizada")
+//            @RequestParam("image") MultipartFile image,
+//            @Parameter(description = "Lista de documentos actualizados asociados al activo")
+//            @RequestParam("documents") List<MultipartFile> documents
+//    ) {
+//        try {
+//            AssetDTO updatedAsset = this.assetService.updateAssetFiles(assetId, image, documents);
+//            return ResponseEntity.ok(updatedAsset);
+//        } catch (Exception e) {
+//            return ResponseEntity.internalServerError().build();
+//        }
+//    }
 
     @Operation(summary = "Actualizar un activo por ID", description = "Actualiza los detalles de un activo existente por su ID")
     @ApiResponses(value = {

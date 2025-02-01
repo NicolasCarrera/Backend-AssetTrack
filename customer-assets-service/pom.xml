@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>customer-assets-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>customer-assets-service</name>
 	<description>Implementación en Cloud Computing de un Sistema Integral de Gestión de Mantenimientos de Activos para Empresas</description>
 	<url/>
@@ -74,12 +74,12 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/io.minio/minio -->
-		<dependency>
-			<groupId>io.minio</groupId>
-			<artifactId>minio</artifactId>
-			<version>8.5.12</version>
-		</dependency>
+<!--		&lt;!&ndash; https://mvnrepository.com/artifact/io.minio/minio &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>io.minio</groupId>-->
+<!--			<artifactId>minio</artifactId>-->
+<!--			<version>8.5.12</version>-->
+<!--		</dependency>-->
 		<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui -->
 		<dependency>
 			<groupId>org.springdoc</groupId>

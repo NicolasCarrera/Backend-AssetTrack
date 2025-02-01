@@ -23,8 +23,8 @@ import java.util.List;
 public class AssetServiceImpl implements AssetService {
     @Autowired
     private AssetRepository assetRepository;
-    @Autowired
-    private FileService fileService;
+//    @Autowired
+//    private FileService fileService;
     @Autowired
     private MaintenanceReportClient maintenanceReportClient;
     @Autowired
@@ -95,30 +95,30 @@ public class AssetServiceImpl implements AssetService {
         return this.assetRepository.countByBranchId(branchId);
     }
 
-    @Override
-    @Transactional
-    public AssetDTO updateAssetFiles(Long assetId, MultipartFile image, List<MultipartFile> documents) throws Exception {
-        Asset asset = this.assetRepository.findById(assetId)
-                .orElseThrow(() -> new EntityNotFoundException("Activo no encontrado con ID: " + assetId));
-
-        // Subir y guardar la imagen
-        if (image != null) {
-            String imagePath = this.fileService.uploadFile(image, "images/" + image.getOriginalFilename());
-            asset.setImagePath(imagePath);
-        }
-
-        // Subir y guardar documentos asociados
-        List<String> assetFiles = new ArrayList<>();
-        if (documents != null && !documents.isEmpty()) {
-            for (MultipartFile document : documents) {
-                String filePath = this.fileService.uploadFile(document, "documents/" + document.getOriginalFilename());
-                assetFiles.add(filePath);
-            }
-            asset.setFiles(assetFiles);
-        }
-        Asset updatedAsset = this.assetRepository.save(asset);
-        return AssetDTO.toAssetDTO(updatedAsset, null);
-    }
+//    @Override
+//    @Transactional
+//    public AssetDTO updateAssetFiles(Long assetId, MultipartFile image, List<MultipartFile> documents) throws Exception {
+//        Asset asset = this.assetRepository.findById(assetId)
+//                .orElseThrow(() -> new EntityNotFoundException("Activo no encontrado con ID: " + assetId));
+//
+//        // Subir y guardar la imagen
+//        if (image != null) {
+//            String imagePath = this.fileService.uploadFile(image, "images/" + image.getOriginalFilename());
+//            asset.setImagePath(imagePath);
+//        }
+//
+//        // Subir y guardar documentos asociados
+//        List<String> assetFiles = new ArrayList<>();
+//        if (documents != null && !documents.isEmpty()) {
+//            for (MultipartFile document : documents) {
+//                String filePath = this.fileService.uploadFile(document, "documents/" + document.getOriginalFilename());
+//                assetFiles.add(filePath);
+//            }
+//            asset.setFiles(assetFiles);
+//        }
+//        Asset updatedAsset = this.assetRepository.save(asset);
+//        return AssetDTO.toAssetDTO(updatedAsset, null);
+//    }
 
     private MaintenanceDTO getMaintenanceDTO(Long assetId) {
         LocalDate lastMaintenance = FeignUtil.safeFeignCall(() ->

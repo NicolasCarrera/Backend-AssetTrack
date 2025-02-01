@@ -1,0 +1,49 @@
+# Configuración del servidor
+server:
+  port: 0
+  servlet:
+    context-path: /api/v1/assets
+
+# Nombre de la aplicación
+spring:
+  application:
+    name: customer-assets-service
+
+  # Configuración de la base de datos (PostgreSQL)
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+
+# Cliente Eureka
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
+  instance:
+    preferIpAddress: true
+
+# Configuración de AWS S3 (MinIO)
+#minio:
+#  url: ${MINIO_URL:http://localhost:9000}
+#  access-key: ${MINIO_ACCESS_KEY}
+#  secret-key: ${MINIO_SECRET_KEY}
+#  bucket: ${MINIO_BUCKET}
+
+# Configuración de Swagger OpenAPI (Springdoc)
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html

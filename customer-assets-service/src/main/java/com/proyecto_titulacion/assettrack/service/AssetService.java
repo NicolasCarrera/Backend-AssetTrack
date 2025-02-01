@@ -17,5 +17,5 @@ public interface AssetService {
     void deleteAsset(Long id);
     Integer countAssetsByBranchId(Long branchId);
 
-    AssetDTO updateAssetFiles(Long assetId, MultipartFile image, List<MultipartFile> documents) throws Exception;
+//    AssetDTO updateAssetFiles(Long assetId, MultipartFile image, List<MultipartFile> documents) throws Exception;
 }
