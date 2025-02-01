@@ -22,10 +22,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Query("SELECT u FROM UserEntity u INNER JOIN u.identityDocuments i WHERE u.status = 'ACTIVE' AND i.identification = :identification")
     Optional<UserEntity> findByIdentification(@Param("identification") String identification);
 
-    @Query("SELECT u FROM UserEntity u INNER JOIN u.roles r WHERE u.status = 'ACTIVE' AND r.name = :role")
+    @Query("SELECT u FROM UserEntity u INNER JOIN u.role r WHERE u.status = 'ACTIVE' AND r.name = :role")
     List<UserEntity> getUsersByRole(@Param("role") String role);
 
-    @Query("SELECT u FROM UserEntity u INNER JOIN u.identityDocuments i INNER JOIN u.roles r " +
+    @Query("SELECT u FROM UserEntity u INNER JOIN u.identityDocuments i INNER JOIN u.role r " +
             "WHERE u.status = 'ACTIVE' AND (" +
             "LOWER(u.firstName) LIKE LOWER(CONCAT('%', :filter, '%')) OR " +
             "LOWER(u.lastName) LIKE LOWER(CONCAT('%', :filter, '%')) OR " +

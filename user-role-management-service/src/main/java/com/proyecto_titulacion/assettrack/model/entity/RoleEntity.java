@@ -33,7 +33,7 @@ public class RoleEntity {
     @JsonManagedReference
     private Set<PermissionEntity> permissions = new HashSet<>();
 
-    @ManyToMany(mappedBy = "roles")
+    @OneToMany(mappedBy = "role")
     @JsonIgnore
-    private Set<UserEntity> users;
+    private Set<UserEntity> users = new HashSet<>();
 }

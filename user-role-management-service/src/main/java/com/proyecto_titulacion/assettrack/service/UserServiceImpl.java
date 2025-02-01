@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.proyecto_titulacion.assettrack.model.dto.IdentityDocumentDTO;
 import com.proyecto_titulacion.assettrack.model.dto.UserDTO;
 import com.proyecto_titulacion.assettrack.model.dto.CreateUser;
+import com.proyecto_titulacion.assettrack.model.entity.IdentityDocument;
 import com.proyecto_titulacion.assettrack.model.entity.RoleEntity;
 import com.proyecto_titulacion.assettrack.model.entity.UserEntity;
 import com.proyecto_titulacion.assettrack.repository.RoleRepository;
@@ -73,11 +74,12 @@ public class UserServiceImpl implements UserService {
                 .email(createUser.email())
                 .password(this.passwordHasher.hashToString(12, createUser.password().toCharArray()))
                 .phone(createUser.phone())
-                .identityDocuments(createUser.documents().stream().map(IdentityDocumentDTO::toIdentityDocument).toList())
-                .roles(Set.of(roleEntity))
+                .identityDocuments(createUser.document().toIdentityDocument())
+                .role(roleEntity)
                 .status(createUser.status())
                 .build();
 
+        userEntity.setIdentityDocuments(createUser.document().toIdentityDocument());
         return UserDTO.toUserDTO(this.userRepository.save(userEntity));
     }
 
@@ -96,12 +98,15 @@ public class UserServiceImpl implements UserService {
         userEntity.setLastName(updateUser.lastName());
         userEntity.setEmail(updateUser.email());
         userEntity.setPhone(updateUser.phone());
-        userEntity.setIdentityDocuments(new ArrayList<>(updateUser.documents().stream()
-                .map(IdentityDocumentDTO::toIdentityDocument)
-                .toList()));
+
+        IdentityDocument identityDocument = userEntity.getIdentityDocuments();
+        identityDocument.setDocument(updateUser.document().document());
+        identityDocument.setIdentification(updateUser.document().identification());
+
+        userEntity.setIdentityDocuments(identityDocument);
 
         if (roleEntity != null) {
-            userEntity.setRoles(new HashSet<>(Collections.singleton(roleEntity)));
+            userEntity.setRole(roleEntity);
         }
         userEntity.setStatus(updateUser.status());
 

@@ -36,20 +36,23 @@ public class UserEntity {
     @Column(unique = true)
     private String phone;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<IdentityDocument> identityDocuments  = new ArrayList<>();
+    private IdentityDocument identityDocuments;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id", nullable = false)
     @JsonManagedReference
-    private Set<RoleEntity> roles = new HashSet<>();
+    private RoleEntity role;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private StatusType status;
+
+    public void setIdentityDocuments(IdentityDocument identityDocuments) {
+        this.identityDocuments = identityDocuments;
+        if(identityDocuments != null) {
+            identityDocuments.setUser(this);
+        }
+    }
 }

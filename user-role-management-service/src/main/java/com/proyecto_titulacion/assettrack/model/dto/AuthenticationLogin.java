@@ -1,4 +1,4 @@
-package com.proyecto_titulacion.assettrack.dto;
+package com.proyecto_titulacion.assettrack.model.dto;
 
 import jakarta.validation.constraints.NotBlank;
 

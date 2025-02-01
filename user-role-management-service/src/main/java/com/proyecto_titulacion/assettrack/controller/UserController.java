@@ -1,6 +1,7 @@
 package com.proyecto_titulacion.assettrack.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.proyecto_titulacion.assettrack.model.dto.AuthenticationLogin;
 import com.proyecto_titulacion.assettrack.model.dto.UserDTO;
 import com.proyecto_titulacion.assettrack.model.dto.CreateUser;
 import com.proyecto_titulacion.assettrack.service.UserService;
@@ -20,11 +21,8 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(
-            @RequestParam("identification") String identification,
-            @RequestParam("password") String password
-    ) throws JsonProcessingException {
-        String user = this.userService.loginUser(identification, password);
+    public ResponseEntity<String> loginUser(@RequestBody AuthenticationLogin userCredentials) throws JsonProcessingException {
+        String user = this.userService.loginUser(userCredentials.identification(), userCredentials.password());
         return ResponseEntity.ok(user);
     }
 

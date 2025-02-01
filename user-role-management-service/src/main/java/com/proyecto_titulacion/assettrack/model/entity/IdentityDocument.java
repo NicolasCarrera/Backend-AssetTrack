@@ -24,7 +24,7 @@ public class IdentityDocument {
     @Column(unique = true, nullable = false)
     private String identification;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private UserEntity user;

@@ -3,8 +3,6 @@ package com.proyecto_titulacion.assettrack.model.dto;
 import com.proyecto_titulacion.assettrack.model.entity.UserEntity;
 import com.proyecto_titulacion.assettrack.model.type.StatusType;
 
-import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public record UserDTO(
@@ -13,8 +11,8 @@ public record UserDTO(
         String lastName,
         String email,
         String phone,
-        List<IdentityDocumentDTO> documents,
-        Set<RoleDTO> roles,
+        IdentityDocumentDTO documents,
+        RoleDTO roles,
         StatusType status
 ) {
     public static UserDTO toUserDTO(UserEntity user) {
@@ -24,8 +22,8 @@ public record UserDTO(
                 user.getLastName(),
                 user.getEmail(),
                 user.getPhone(),
-                user.getIdentityDocuments().stream().map(IdentityDocumentDTO::toIdentityDocumentDTO).toList(),
-                user.getRoles().stream().map(RoleDTO::toRoleDTO).collect(Collectors.toSet()),
+                IdentityDocumentDTO.toIdentityDocumentDTO(user.getIdentityDocuments()),
+                RoleDTO.toRoleDTO(user.getRole()),
                 user.getStatus()
         );
     }
@@ -38,8 +36,8 @@ public record UserDTO(
                 .email(this.email)
                 .password(password)
                 .phone(this.phone)
-                .identityDocuments(this.documents.stream().map(IdentityDocumentDTO::toIdentityDocument).toList())
-                .roles(this.roles.stream().map(RoleDTO::toRoleEntity).collect(Collectors.toSet()))
+                .identityDocuments(this.documents.toIdentityDocument())
+                .role(this.roles.toRoleEntity())
                 .status(this.status)
                 .build();
     }

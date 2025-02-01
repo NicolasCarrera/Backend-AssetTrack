@@ -12,7 +12,7 @@ public record CreateUser(
         String email,
         String password,
         String phone,
-        List<IdentityDocumentDTO> documents,
+        IdentityDocumentDTO document,
         String role,
         StatusType status
 ) {
