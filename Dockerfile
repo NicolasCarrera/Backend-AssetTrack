@@ -2,14 +2,24 @@
 FROM maven:3.9.9-eclipse-temurin-21-alpine AS builder
 
 WORKDIR /app
+
+# Primero copia SOLO los archivos necesarios para resolver dependencias
 COPY pom.xml .
-# Cache Maven dependencies
+COPY discovery-service/pom.xml discovery-service/
+COPY gateway-service/pom.xml gateway-service/
+COPY customer-assets-service/pom.xml customer-assets-service/
+COPY customer-branches-service/pom.xml customer-branches-service/
+COPY maintenance-reporting-service/pom.xml maintenance-reporting-service/
+COPY user-role-management-service/pom.xml user-role-management-service/
+COPY work-order-service/pom.xml work-order-service/
+
+# Descarga dependencias (ahora puede validar la estructura de módulos)
 RUN mvn dependency:go-offline -B
 
-# Copy all source code
+# Ahora copia todo el código fuente
 COPY . .
 
-# Build all modules and skip tests
+# Construye todos los módulos
 RUN mvn clean package -DskipTests
 
 # Stage 2: Runtime image
@@ -17,7 +27,7 @@ FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
-# Copy all built JARs
+# Copia todos los JARs construidos
 COPY --from=builder /app/discovery-service/target/*.jar ./discovery-service.jar
 COPY --from=builder /app/gateway-service/target/*.jar ./gateway-service.jar
 COPY --from=builder /app/customer-assets-service/target/*.jar ./customer-assets-service.jar
@@ -46,7 +56,6 @@ RUN echo $'#!/bin/sh\n\
   tail -f /dev/null' > entrypoint.sh && \
   chmod +x entrypoint.sh
 
-# Exponer puertos necesarios
 EXPOSE 8761 8080
 
 ENTRYPOINT ["./entrypoint.sh"]
