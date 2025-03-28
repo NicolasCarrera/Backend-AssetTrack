@@ -1,5 +1,5 @@
-FROM eclipse-temurin:21.0.4_7-jre-noble
-EXPOSE 8761
-VOLUME /tmp
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /app
 COPY target/*.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+EXPOSE 8761
+ENTRYPOINT ["java", "-jar", "app.jar"]

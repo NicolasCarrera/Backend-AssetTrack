@@ -1,0 +1,110 @@
+version: '3.8'
+
+services:
+  discovery-service:
+    build: ./discovery-service
+    ports:
+      - "8761:8761"
+    deploy:
+      update_config:
+        delay: 60s
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+
+  gateway-service:
+    build: ./gateway-service
+    ports:
+      - "8080:8080"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:-http://discovery-service:8761/eureka}
+      PATH_ALLOWED_ORIGIN: ${PATH_ALLOWED_ORIGIN}
+    depends_on:
+      - discovery-service
+    deploy:
+      update_config:
+        delay: 60s
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+
+  customer-assets-service:
+    build: ./customer-assets-service
+    environment:
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:-http://discovery-service:8761/eureka}
+    depends_on:
+      - discovery-service
+    deploy:
+      update_config:
+        delay: 60s
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+
+  customer-branches-service:
+    build: ./customer-branches-service
+    environment:
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:-http://discovery-service:8761/eureka}
+    depends_on:
+      - discovery-service
+    deploy:
+      update_config:
+        delay: 60s
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+
+  maintenance-reporting-service:
+    build: ./maintenance-reporting-service
+    environment:
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:-http://discovery-service:8761/eureka}
+    depends_on:
+      - discovery-service
+    deploy:
+      update_config:
+        delay: 60s
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+
+  user-role-management-service:
+    build: ./user-role-management-service
+    environment:
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:-http://discovery-service:8761/eureka}
+    depends_on:
+      - discovery-service
+    deploy:
+      update_config:
+        delay: 60s
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+
+  work-order-service:
+    build:
+      context: ./work-order-service
+    environment:
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:-http://discovery-service:8761/eureka}
+    depends_on:
+      - discovery-service
+    deploy:
+      update_config:
+        delay: 60s
+      restart_policy:
+        condition: on-failure
+        delay: 30s
