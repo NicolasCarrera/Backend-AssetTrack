@@ -38,11 +38,11 @@ COPY --from=builder /app/work-order-service/target/*.jar ./work-order-service.ja
 
 # Script de inicio mejorado
 RUN echo $'#!/bin/sh\n\
-  echo "Starting Discovery Service..." && \
-  java -jar discovery-service.jar > discovery.log 2>&1 & \
+  echo "Starting Discovery Service on port 8761..." && \
+  java -jar discovery-service.jar --server.port=8761 > discovery.log 2>&1 & \n\
   sleep 15 && \n\
-  echo "Starting Gateway Service..." && \
-  java -jar gateway-service.jar > gateway.log 2>&1 & \n\
+  echo "Starting Gateway Service on port 8080..." && \
+  java -jar gateway-service.jar --server.port=8080 > gateway.log 2>&1 & \n\
   echo "Starting Customer Assets Service..." && \
   java -jar customer-assets-service.jar > assets.log 2>&1 & \n\
   echo "Starting Customer Branches Service..." && \
@@ -53,9 +53,12 @@ RUN echo $'#!/bin/sh\n\
   java -jar user-role-management-service.jar > user-role.log 2>&1 & \n\
   echo "Starting Work Order Service..." && \
   java -jar work-order-service.jar > work-order.log 2>&1 & \n\
-  tail -f /dev/null' > entrypoint.sh && \
+  while true; do nc -l -p 8761 -e echo "Eureka"; nc -l -p 8080 -e echo "Gateway"; done' > entrypoint.sh && \
   chmod +x entrypoint.sh
 
 EXPOSE 8761 8080
+
+HEALTHCHECK --interval=30s --timeout=3s \
+  CMD wget --quiet --tries=1 --spider http://localhost:8080/actuator/health || exit 1
 
 ENTRYPOINT ["./entrypoint.sh"]
