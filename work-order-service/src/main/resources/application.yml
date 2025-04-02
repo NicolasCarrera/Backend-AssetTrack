@@ -26,16 +26,6 @@ spring:
     hibernate:
       ddl-auto: update
 
-# Cliente Eureka
-#eureka:
-#  client:
-#    service-url:
-#      defaultZone: http://eureka-service:8761/eureka
-#    fetch-registry: true
-#    register-with-eureka: true
-#  instance:
-#    prefer-ip-address: true
-#    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 eureka:
   client:
     serviceUrl:
